@@ -53,8 +53,8 @@ Key functionalities include:
 
 List any pending tasks or features you plan to add. For example:
 
-[ ] Improve error handling.
-[ ] Add more unit tests.
+- [ ] Improve error handling.
+- [ ] Add more unit tests.
 
 ## Known Issues
 
