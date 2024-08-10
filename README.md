@@ -28,7 +28,8 @@ Key functionalities include:
 
 ## Usage
 
-- Download the binary files based on your OS and processor architecture from Release page.
+- Download the binary files based on your OS and processor architecture
+  from [Release page](https://github.com/amirrezaDev1378/ollama-model-direct-download/releases).
 - ### Generate Direct Download Links
     - Run the binary file in your terminal Using this command `omdd get deepseek-coder-v2:latest`.
     - Wait for the tool to fetch the download link.
