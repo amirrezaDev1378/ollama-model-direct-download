@@ -33,6 +33,8 @@ Key functionalities include:
     - Run the binary file in your terminal Using this command `omdd get deepseek-coder-v2:latest`.
     - Wait for the tool to fetch the download link.
 - ### Install Ollama Models
+    - First make sure to backup your current
+      models. [Where are ollama models ?](https://github.com/ollama/ollama/blob/main/docs/faq.md#where-are-models-stored)
     - Store your models and your manifest file (can be named latest or your model parameter length e.g. 16b ) in a new
       folder.
     - Run the following command:
