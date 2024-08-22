@@ -50,7 +50,7 @@ Key functionalities include:
 - Install the dependencies using `go mod tidy`.
 - Make your changes.
 - Run the tests using `go test ./...`.
-- Build the binary using `go build -o omdd cmd/omdd/main.go`.
+- Build the binary using `make build`.
 
 ## TODO Tasks
 
