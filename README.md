@@ -61,7 +61,7 @@ List any pending tasks or features you plan to add. For example:
 
 ## Known Issues
 
-We won't validate what you have downloaded any copy all the files to the model folder.
+We won't validate what you have downloaded, we'll copy all the files to the model folder.
 
 ## License
 
