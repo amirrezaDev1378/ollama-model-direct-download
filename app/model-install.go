@@ -107,7 +107,7 @@ func InstallModel(modelName string, downloadedModelPath string) error {
 	manifestPath := path.Join(modelsPath, manifestPatternWithValues)
 
 	manifestFolderStat, err := os.Stat(manifestPath)
-	if err != nil && !errors.Is(os.ErrNotExist, err) {
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
 		return fmt.Errorf("error checking manifest folder: %v", err.Error())
 	}
 
