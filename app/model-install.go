@@ -22,6 +22,10 @@ const (
 
 func getModelsPath() string {
 	targetOS := runtime.GOOS
+	customModelStorePath := os.Getenv("OLLAMA_MODELS")
+	if customModelStorePath != "" {
+		return strings.Replace(customModelStorePath, "%username%", os.Getenv("USERNAME"), 1)
+	}
 	switch targetOS {
 	case "darwin":
 		return macOSModelsPath
@@ -29,7 +33,7 @@ func getModelsPath() string {
 		return linuxOSModelsPath
 	case "windows":
 		if os.Getenv("USERNAME") == "" {
-			log.Println("Environment variable USERNAME not set")
+			log.Println("Environment variable USERNAME is not set")
 			os.Exit(1)
 		}
 		return strings.Replace(windowsOSModelsPath, "<username>", os.Getenv("USERNAME"), 1)
@@ -103,7 +107,7 @@ func InstallModel(modelName string, downloadedModelPath string) error {
 	manifestPath := path.Join(modelsPath, manifestPatternWithValues)
 
 	manifestFolderStat, err := os.Stat(manifestPath)
-	if err != nil && !errors.Is(os.ErrNotExist, err) {
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
 		return fmt.Errorf("error checking manifest folder: %v", err.Error())
 	}
 
