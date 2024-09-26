@@ -4,7 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/amirrezaDev1378/app"
+	"github.com/amirrezaDev1378/ollama-model-direct-download/app"
 	"os"
 	"slices"
 	"strings"
