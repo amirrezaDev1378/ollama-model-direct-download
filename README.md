@@ -38,6 +38,7 @@ Key functionalities include:
       models. [Where are ollama models stored?](https://github.com/ollama/ollama/blob/main/docs/faq.md#where-are-models-stored)
     - Store your models and your manifest file (can be named latest or your model parameter length e.g. 16b ) in a new
       folder.
+      You should rename your manifest file to 'manifest' if it is not already named that.
     - Run the following command:
     - `omdd install --model=<your-model-name> --blobsPath=<downlaoded-blobs-relative-path>`.
     - Replace `<your-model-name>` with the name of your model and `<downlaoded-blobs-relative-path>` with the path to
