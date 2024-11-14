@@ -34,7 +34,10 @@ jobs:
         run: bun install
 
       - name: Build website
-        run: bun run build
+        run: |
+          bun run build
+          ls -la  # Debug: List all files
+          ls -la build || ls -la ./dist  # Debug: Check both possible build directories
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -45,7 +48,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    needs: /build
+    needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
