@@ -40,9 +40,8 @@ jobs:
           ls -la build || ls -la ./dist  # Debug: Check both possible build directories
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: build
+        id: deployment
+        uses: actions/deploy-pages@v4
 
   deploy:
     environment:
