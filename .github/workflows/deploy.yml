@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - master
       - docs/*
 
 defaults:
@@ -62,3 +62,5 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          folder: ${{ github.ref_name == 'master' && 'documents/build/' || 'documents/build/${{ github.ref_name }}' }}
