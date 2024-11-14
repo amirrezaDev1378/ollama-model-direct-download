@@ -6,6 +6,9 @@ on:
       - main
       - docs/*
 
+defaults:
+  run:
+    working-directory: documents
 jobs:
   build:
     name: Build Docusaurus
