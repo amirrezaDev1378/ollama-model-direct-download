@@ -5,7 +5,11 @@
 The Ollama Model Direct Link Generator and Installer is a utility designed to streamline the process of obtaining direct
 download links for Ollama models and installing them. This tool is intended for developers, researchers, and enthusiasts
 interested in Ollama models, providing a straightforward and efficient solution.
+_________
 
+## [New Tutorial & Documentation](https://amirrezadev1378.github.io/ollama-model-direct-download/)
+
+___________
 ### Table of Contents
 
 - [Introduction](#Introduction)
