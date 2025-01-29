@@ -1,6 +1,7 @@
 package app
 
 import (
+	"crypto/sha256"
 	"errors"
 	"fmt"
 	"io"
@@ -66,8 +67,34 @@ func getBlobNames(path string) ([]string, error) {
 	return blobPaths, nil
 }
 
-func parseBlobsDestinationPath(p string) string {
-	newPath := strings.Replace(p, "\\", "/", -1)
+func getFileHashedName(filePath string) (string, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	hasher := sha256.New()
+	if _, err := io.Copy(hasher, file); err != nil {
+		return "", err
+	}
+
+	hashSum := hasher.Sum(nil)
+	return fmt.Sprintf("sha256%x", hashSum), nil
+}
+
+func parseBlobsDestinationPath(source string, targetFolder string, fileName string) string {
+	newPath := strings.Replace(targetFolder, "\\", "/", -1)
+	if !strings.Contains(fileName, "sha256") {
+		fileHash, err := getFileHashedName(path.Join(source, fileName))
+		if err != nil {
+			log.Printf("Error getting file hash for %v: %v", fileName, err)
+		}
+		newPath = path.Join(newPath, fileHash)
+	} else {
+		newPath = path.Join(newPath, fileName)
+	}
+
 	switch runtime.GOOS {
 	case "windows":
 		newPath = strings.Replace(newPath, "sha256", "sha256-", -1)
@@ -176,7 +203,7 @@ func InstallModel(modelName string, downloadedModelPath string) error {
 		}
 		defer blobFile.Close()
 
-		destinationBlobFile, err := os.Create(parseBlobsDestinationPath(path.Join(blobsFolderPath, blobName)))
+		destinationBlobFile, err := os.Create(parseBlobsDestinationPath(downloadedModelPath, blobsFolderPath, blobName))
 		if err != nil {
 			return fmt.Errorf("error creating blob file: %v", err.Error())
 		}
