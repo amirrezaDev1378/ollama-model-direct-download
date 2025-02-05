@@ -13,9 +13,10 @@ import (
 )
 
 const (
-	macOSModelsPath     = "~/.ollama/models"
-	linuxOSModelsPath   = "/usr/share/ollama/.ollama/models"
-	windowsOSModelsPath = "C:/Users/<username>/.ollama/models"
+	macOSModelsPath              = "~/.ollama/models"
+	linuxOSModelsPath            = "/usr/share/ollama/.ollama/models"
+	snapStoreInstalledModelsPath = "/var/snap/ollama/common/models"
+	windowsOSModelsPath          = "C:/Users/<username>/.ollama/models"
 
 	manifestPattern = "manifests/<registry>/library/<model-name>"
 	blobsPattern    = "blobs"
@@ -31,6 +32,10 @@ func getModelsPath() string {
 	case "darwin":
 		return macOSModelsPath
 	case "linux":
+		snapStoreDir, _ := os.Stat(snapStoreInstalledModelsPath)
+		if snapStoreDir.IsDir() {
+			return snapStoreInstalledModelsPath
+		}
 		return linuxOSModelsPath
 	case "windows":
 		if os.Getenv("USERNAME") == "" {
@@ -95,12 +100,8 @@ func parseBlobsDestinationPath(source string, targetFolder string, fileName stri
 		newPath = path.Join(newPath, fileName)
 	}
 
-	switch runtime.GOOS {
-	case "windows":
-		newPath = strings.Replace(newPath, "sha256", "sha256-", -1)
-	default:
-		newPath = strings.Replace(newPath, "sha256", "sha256:", 1)
-	}
+	// This isn't os dependent anymore
+	newPath = strings.Replace(newPath, "sha256", "sha256-", -1)
 	return newPath
 }
 
