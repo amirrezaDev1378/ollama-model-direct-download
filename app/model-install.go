@@ -32,7 +32,10 @@ func getModelsPath() string {
 	case "darwin":
 		return macOSModelsPath
 	case "linux":
-		snapStoreDir, _ := os.Stat(snapStoreInstalledModelsPath)
+		snapStoreDir, err := os.Stat(snapStoreInstalledModelsPath)
+		if err != nil {
+			return linuxOSModelsPath
+		}
 		if snapStoreDir.IsDir() {
 			return snapStoreInstalledModelsPath
 		}
