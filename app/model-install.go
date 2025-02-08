@@ -39,7 +39,7 @@ func getModelsPath() string {
 		return linuxOSModelsPath
 	case "windows":
 		if os.Getenv("USERNAME") == "" {
-			log.Println("Environment variable USERNAME is not set")
+			log.Println("Error: Environment variable USERNAME is not set")
 			os.Exit(1)
 		}
 		return strings.Replace(windowsOSModelsPath, "<username>", os.Getenv("USERNAME"), 1)
@@ -111,7 +111,7 @@ func parseModelName(modelName string) (string, string) {
 	if len(splitModelName) == 2 {
 		modelTag = splitModelName[1]
 	} else {
-		log.Println("Using default model tag if you encountered any error while using ollama try to install it with the acutal tag e.g. llama:16b ")
+		log.Println("Using default model tag. If you encounter any error while using ollama, try installing it with an actual tag e.g. llama:16b")
 	}
 	return modelTag, splitModelName[0]
 }
@@ -149,14 +149,14 @@ func InstallModel(modelName string, downloadedModelPath string) error {
 	modelAlreadyExists := err == nil
 	if modelAlreadyExists {
 		fmt.Print("\033[33m")
-		fmt.Println("!Warning! Some Model Files already exists, Do you wish to override them ? this is permanent! Type 'Y' to proceed.")
+		fmt.Println("Warning! Some Model Files already exist, Do you wish to override them? This is permanent! Type 'Y' to proceed.")
 		fmt.Print("\033[0m")
 
 		var input string
 		fmt.Scanln(&input)
 		input = strings.TrimSpace(strings.ToUpper(input))
 		if input != "Y" {
-			log.Println("Installation aborted")
+			log.Println("Installation aborted!")
 			os.Exit(1)
 		}
 	}
@@ -196,7 +196,7 @@ func InstallModel(modelName string, downloadedModelPath string) error {
 		}
 	}
 	log.Println("Copying blobs to", blobsFolderPath)
-	log.Println("This may take a while so dont worry the program is not stuck")
+	log.Println("This may take a while, so don't worry if it seems stuck.")
 	for _, blobName := range blobNames {
 		blobFile, err := os.Open(path.Join(downloadedModelPath, blobName))
 		if err != nil {
@@ -221,6 +221,6 @@ func InstallModel(modelName string, downloadedModelPath string) error {
 		}
 	}
 
-	fmt.Println("Model installed successfully")
+	fmt.Println("Model installed successfully!")
 	return nil
 }
