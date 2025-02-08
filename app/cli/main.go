@@ -70,13 +70,13 @@ func CommandGet() {
 	if err != nil {
 		os.Exit(1)
 	}
-	fmt.Println("get direct download link for model :", modelName)
+	fmt.Println("Fetching direct download link for model:", modelName)
 
 	parsedModelPath := app.ParseModelPath(modelName)
 
 	manifest, manifestLink, err := app.GetManifest(context.TODO(), parsedModelPath, app.DefaultRegistryConfig)
 	if err != nil {
-		fmt.Println("error getting manifest: ", err)
+		fmt.Println("Error getting manifest:", err)
 		os.Exit(1)
 	}
 
@@ -99,9 +99,10 @@ func CommandGet() {
 	fmt.Printf("Manifest download link: %s\n", manifestLink)
 	fmt.Println("Download links for layers:")
 	for i, link := range downloadLinks {
-		fmt.Printf("%d- %s\n", i+1, link)
+		fmt.Printf("%d - %s\n", i+1, link)
 	}
-	fmt.Println("Generated download links for model : ", modelName, "finished successfully.")
+	fmt.Println("Generated download links for model:", modelName)
+	fmt.Println("Finished successfully!")
 	os.Exit(0)
 }
 

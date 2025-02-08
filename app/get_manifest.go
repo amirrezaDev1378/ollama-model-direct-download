@@ -45,7 +45,7 @@ func GetManifest(ctx context.Context, modelPath ModelPath, regOpts *registryOpti
 		log.Println(string(body))
 		log.Println(requestURL.String())
 		log.Println(headers)
-		return nil, "", errors.New("error getting manifest: " + resp.Status)
+		return nil, "", errors.New(resp.Status)
 	}
 	defer resp.Body.Close()
 
