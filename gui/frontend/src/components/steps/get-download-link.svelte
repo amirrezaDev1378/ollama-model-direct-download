@@ -1,11 +1,13 @@
 <script lang="ts">
-    import { GetModelDownloadLinks } from '../../../wailsjs/go/main/App.js';
-    import type { main } from '../../../wailsjs/go/models.js';
+    import {GetModelDownloadLinks} from "../../../wailsjs/go/main/App.js";
+    import type {main} from "../../../wailsjs/go/models.js";
+    import {ClipboardSetText} from "../../../wailsjs/runtime/runtime";
 
     let modelName: string = "";
     let loading: boolean = false;
     let error: string | null = null;
     let response: main.GetLinkResponse | null = null;
+    let copyButtonStatus: "error" | "success" | "pending" | "default" = "default";
 
     async function handleGetLinks() {
         if (!modelName.trim()) {
@@ -24,6 +26,25 @@
             loading = false;
         }
     }
+
+    function copyAllToClipboard() {
+        if (response) {
+            copyButtonStatus = "pending";
+            ClipboardSetText([response.manifestLink, ...response.downloadLinks].join("\n")).then(r => {
+                setTimeout(() => {
+                    copyButtonStatus = "success";
+                }, 800);
+            }).catch(err => {
+                console.error(err.message);
+                copyButtonStatus = "error";
+
+            }).finally(() => {
+                setTimeout(() => {
+                    copyButtonStatus = "default";
+                }, 4000);
+            });
+        }
+    }
 </script>
 
 <div class="card">
@@ -31,11 +52,11 @@
     <div class="input-group">
         <label for="modelName">Model Name:</label>
         <input
-            type="text"
-            id="modelName"
-            bind:value={modelName}
-            placeholder="e.g. deepseek-coder-v2:latest"
-            on:keydown={(e) => e.key === 'Enter' && handleGetLinks()}
+                type="text"
+                id="modelName"
+                bind:value={modelName}
+                placeholder="e.g. deepseek-coder-v2:latest"
+                on:keydown={(e) => e.key === 'Enter' && handleGetLinks()}
         />
     </div>
 
@@ -64,6 +85,13 @@
                     </li>
                 {/each}
             </ul>
+            <button class="btn-copy" on:click={copyAllToClipboard}>
+
+                {copyButtonStatus === "default" ? "Copy All Links" : ""}
+                {copyButtonStatus === "error" ? "Failed to copy links!" : ""}
+                {copyButtonStatus === "success" ? "Copied ..." : ""}
+                {copyButtonStatus === "pending" ? " ... " : ""}
+            </button>
         </div>
     {/if}
 </div>
@@ -138,6 +166,21 @@
         cursor: not-allowed;
     }
 
+    .btn-copy {
+        padding: 16px;
+        border-radius: 12px;
+        background: #6aefb0;
+        width: 300px;
+        margin-top: 24px;
+        margin-inline: auto;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    .btn-copy:hover {
+        background: #5bd79c;
+    }
     .error-box {
         margin-top: 1.5rem;
         padding: 1rem;
@@ -151,6 +194,8 @@
         margin-top: 2rem;
         border-top: 1px solid var(--border-color, #4a4a5a);
         padding-top: 1rem;
+        display: flex;
+        flex-direction: column;
     }
 
     .link-box {
