@@ -1,10 +1,13 @@
 module gui
 
-go 1.21
+go 1.22.1
 
-toolchain go1.23.6
+toolchain go1.24.3
 
-require github.com/wailsapp/wails/v2 v2.9.2
+require (
+	github.com/amirrezaDev1378/ollama-model-direct-download v0.0.0-00010101000000-000000000000
+	github.com/wailsapp/wails/v2 v2.9.2
+)
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect
@@ -37,3 +40,5 @@ require (
 )
 
 // replace github.com/wailsapp/wails/v2 v2.9.2 => /home/amir/go/pkg/mod
+
+replace github.com/amirrezaDev1378/ollama-model-direct-download => ../
