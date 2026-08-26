@@ -1,7 +1,7 @@
 <script lang="ts">
-    import logo from './assets/images/logo-universal.png'
-    import GetDownloadLink from './components/steps/get-download-link.svelte';
-    import Install from './components/steps/install.svelte';
+    import logo from "./assets/images/ollama.png";
+    import GetDownloadLink from "./components/steps/get-download-link.svelte";
+    import Install from "./components/steps/install.svelte";
 
     let chosenStep: "GetLink" | "Install" = "GetLink";
 </script>
