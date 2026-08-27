@@ -35,7 +35,12 @@ cd ../gui/frontend
 bun i
 cd ../
 
-for PLATFORM in "${PLATFORMS[@]}"
+
+# Cross compiling for ARM and Darwing is not support by wails as of now.
+# Currently only these platform are properly supported:
+GUI_PLATFORMS=("linux/amd64" "windows/amd64" "windows/386")
+
+for PLATFORM in "${GUI_PLATFORMS[@]}"
 do
     OS=$(echo "$PLATFORM" | cut -d'/' -f1)
     ARCH=$(echo "$PLATFORM" | cut -d'/' -f2)
@@ -46,7 +51,7 @@ do
     fi
 
     echo "Building for $OS/$ARCH..."
-    if ! GOOS=$OS GOARCH=$ARCH wails build -clean -o "$OUTPUT_NAME"
+    if ! CGO_ENABLED=1 GOOS=$OS GOARCH=$ARCH wails build -o "$OUTPUT_NAME"
          then
             echo "An error occurred during the build for $PLATFORM"
             exit 1
