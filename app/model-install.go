@@ -119,10 +119,14 @@ func parseModelName(modelName string) (string, string) {
 	return modelTag, splitModelName[0]
 }
 
-func InstallModel(modelName string, downloadedModelPath string) error {
+func InstallModel(modelName string, downloadedModelPath string, forceOverride bool, progressCallback func(progress float64, message string)) error {
 	modelsPath := getModelsPath()
 
 	modelTag, modelPrefix := parseModelName(modelName)
+
+	if progressCallback != nil {
+		progressCallback(0.0, "Preparing to install...")
+	}
 
 	stat, err := os.Stat(modelsPath)
 	if err != nil || !stat.IsDir() {
@@ -151,24 +155,26 @@ func InstallModel(modelName string, downloadedModelPath string) error {
 	_, err = os.Stat(path.Join(manifestPath, modelTag))
 	modelAlreadyExists := err == nil
 	if modelAlreadyExists {
-		fmt.Print("\033[33m")
-		fmt.Println("Warning! Some Model Files already exist, Do you wish to override them? This is permanent! Type 'Y' to proceed.")
-		fmt.Print("\033[0m")
+		if !forceOverride {
+			fmt.Print("\033[33m")
+			fmt.Println("Warning! Some Model Files already exist, Do you wish to override them? This is permanent! Type 'Y' to proceed.")
+			fmt.Print("\033[0m")
 
-		var input string
-		fmt.Scanln(&input)
-		input = strings.TrimSpace(strings.ToUpper(input))
-		if input != "Y" {
-			log.Println("Installation aborted!")
-			os.Exit(1)
+			var input string
+			fmt.Scanln(&input)
+			input = strings.TrimSpace(strings.ToUpper(input))
+			if input != "Y" {
+				log.Println("Installation aborted!")
+				return fmt.Errorf("installation aborted by user")
+			}
 		}
 	}
 
 	downloadedManifest, err := getManifestFile(downloadedModelPath)
-	defer downloadedManifest.Close()
 	if err != nil {
 		return fmt.Errorf("error opening downloaded manifest file: %v", err.Error())
 	}
+	defer downloadedManifest.Close()
 
 	destinationManifestFile, err := os.Create(path.Join(manifestPath, modelTag))
 	if err != nil {
@@ -200,30 +206,49 @@ func InstallModel(modelName string, downloadedModelPath string) error {
 	}
 	log.Println("Copying blobs to", blobsFolderPath)
 	log.Println("This may take a while, so don't worry if it seems stuck.")
-	for _, blobName := range blobNames {
+	if progressCallback != nil {
+		progressCallback(0.05, fmt.Sprintf("Copying blobs to %s...", blobsFolderPath))
+	}
+
+	totalBlobs := len(blobNames)
+	for i, blobName := range blobNames {
 		blobFile, err := os.Open(path.Join(downloadedModelPath, blobName))
 		if err != nil {
 			return fmt.Errorf("error opening blob file: %v", err.Error())
 		}
-		defer blobFile.Close()
 
 		destinationBlobFile, err := os.Create(parseBlobsDestinationPath(downloadedModelPath, blobsFolderPath, blobName))
 		if err != nil {
+			blobFile.Close()
 			return fmt.Errorf("error creating blob file: %v", err.Error())
 		}
-		defer destinationBlobFile.Close()
 
 		_, err = io.Copy(destinationBlobFile, blobFile)
 		if err != nil {
+			blobFile.Close()
+			destinationBlobFile.Close()
 			return fmt.Errorf("error copying blob file: %v", err.Error())
 		}
 
 		err = destinationBlobFile.Sync()
 		if err != nil {
+			blobFile.Close()
+			destinationBlobFile.Close()
 			return fmt.Errorf("error syncing blob file: %v", err.Error())
+		}
+
+		blobFile.Close()
+		destinationBlobFile.Close()
+
+		if progressCallback != nil {
+			currentProgress := 0.05 + (0.95 * float64(i+1) / float64(totalBlobs))
+			progressCallback(currentProgress, fmt.Sprintf("Copied blob %d of %d", i+1, totalBlobs))
 		}
 	}
 
 	fmt.Println("Model installed successfully!")
+	if progressCallback != nil {
+		progressCallback(1.0, "Model installed successfully!")
+	}
 	return nil
 }

@@ -135,7 +135,7 @@ func CommandInstall() {
 		os.Exit(1)
 	}
 
-	err = app.InstallModel(*modelName, *blobsPath)
+	err = app.InstallModel(*modelName, *blobsPath, false, nil)
 	if err != nil {
 		fmt.Println("error installing model: ", err)
 		os.Exit(1)
