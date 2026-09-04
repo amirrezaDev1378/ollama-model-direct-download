@@ -4,33 +4,33 @@ sidebar_position: 2
 
 # Getting Direct Links
 
-In this section you will learn how to use the project to generate direct download link for the projects.
+This section explains how to generate direct download links for Ollama models using the tool.
 
 ## Finding a model
 
-You first need to find a model from [here](https://ollama.com/library)
+First, find a model from the [Ollama Library](https://ollama.com/library).
 
-Copy the model name (and tag name if you want to download a specific version)
+Copy the model name. If you want a specific version, include the tag name too.
 
 ![Docusaurus logo](/img/model-name-and-tag.png)
 
-In this case the model name is qwen2.5-coder and the tag name is 3b
+In this example, the model name is `qwen2.5-coder` and the tag name is `3b`.
 
 ## Generating Links
 
-Use this command to generate direct links
+Run this command to generate direct links:
 
 ```shell
 ./omdd get qwen2.5-coder:3b
 ```
 
-You may omit the tag if you want to get the latest tag (default & standard version) 
+You can leave out the tag if you want the default or latest version:
 
 ```shell
 ./omdd get qwen2.5-coder
 ```
 
-The results should look like this:
+The output will look like this:
 
 ```text
 Fetching direct download link for model: qwen2.5-coder
@@ -46,4 +46,4 @@ Finished successfully!
 
 ```
 
-As you can see, we get the links for blobs and the manifest of model.
+The tool provides the links for the model's manifest and all the required blobs.

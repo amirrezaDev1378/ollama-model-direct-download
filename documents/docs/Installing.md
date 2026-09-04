@@ -4,16 +4,16 @@ sidebar_position: 1
 
 # Installation Tutorial
 
-In this section you will learn how to install this project.
+This section explains how to install the project.
 
 ## Getting Started
 
-You will need to download the CLI executable from
-**[here](https://github.com/amirrezaDev1378/ollama-model-direct-download/releases/latest)**
+First, download the CLI executable from the **[Release page](https://github.com/amirrezaDev1378/ollama-model-direct-download/releases/latest)**.
 
 ## Preparing for usage
 
-*Please note that this project does not come with an installer nor a graphical interface. This is a CLI based app.*
+Note that this project is a CLI application. It does not have a graphical interface or an installer.
 
-After downloading the CLI executable, you need to create a new directory and paste the executable there. Copy any models that you want to install, to the same directory.
-The program is now ready to be used!
+After you download the executable, create a new directory and place the executable inside it. Copy any models you want to install into this same directory.
+
+The program is now ready to use.
