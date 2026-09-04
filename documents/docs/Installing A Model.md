@@ -4,39 +4,40 @@ sidebar_position: 3
 
 # Installing A Downloaded Model
 
-In this section you will learn how to install a downloaded model.
+This section explains how to install a model you have downloaded.
 
 ## Disclaimer
 
-Please make sure you have a backup of your currently installed models.
+Make sure you have a backup of your current models.
 [Where are ollama models stored?](https://github.com/ollama/ollama/blob/main/docs/faq.md#where-are-models-stored)
 
-## Copy all required file to a directory (preferably the same as the executable)
+## Prepare your files
 
-You first need to copy all downloaded blobs to a folder. Keep in mind there are no proper validation of files, so
-make sure you have only the blobs there!
+First, copy all the downloaded blobs into one folder. We recommend putting them in the same folder as the executable. The tool does not validate the files, so check that only the correct blobs are in this folder.
 
 ## Rename the manifest file
 
-The manifest file must be named `manifest` without any file extension.
+You need to rename your manifest file. It must be named `manifest` exactly, without any file extension.
 
 ## Install your model
 
-You can use this command to install the model:
+Run this command to install the model:
 
 ```shell
 omdd install --model=<model-name> --blobsPath=<downloaded-blobs-path>
 ```
 
-In this case `<model-name>` is the name of your model (you can give it any name you wish) and `<downloaded-blobs-path>` is the relative path to your model.
+Replace `<model-name>` with whatever name you want to give your model. Replace `<downloaded-blobs-path>` with the relative path to the folder containing your model files.
 
 ### Examples:
+
+If your files are in the same folder:
 
 ```shell
 omdd install --model=MyAwesomeModel --blobsPath=./
 ```
 
-Or if your models are stored somewhere else
+If your files are stored in a different folder:
 
 ```shell
 omdd install --model=MyAwesomeModel --blobsPath=../../path/to/blobs
@@ -44,9 +45,8 @@ omdd install --model=MyAwesomeModel --blobsPath=../../path/to/blobs
 
 ## Run your model
 
-Success! You've successfully installed your model. You can now run it normally using Ollama with command:
+That is it! You have installed your model. You can now run it in Ollama with this command:
+
 ```shell
 ollama run <model-name>
 ```
-
-Happy AI inference!
